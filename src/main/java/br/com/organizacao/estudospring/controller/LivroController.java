@@ -1,7 +1,12 @@
 package br.com.organizacao.estudospring.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,6 +72,18 @@ public class LivroController {
 	public Iterable<Livro> findByTitulo(@RequestParam(value="titulo") String titulo) {
 		Iterable<Livro> livros = this.livroDao.findByTitulo(titulo);
 		return livros;
+	}
+	
+	@RequestMapping(value="/criarTeste", method=RequestMethod.POST)
+	@ResponseBody
+	public String criarTeste(
+							@RequestParam(value="autor") String autor,
+							@RequestParam(value="titulo") String titulo,
+							@RequestParam(value="description") String description,
+							@RequestParam(value="isbn") String isbn
+							) {		
+		
+		return autor + " Cadastrado com sucesso.";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
