@@ -6,9 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="livro")
@@ -19,26 +16,15 @@ public class Livro {
 	private Long id;
 	
 	@Column(name="titulo", nullable=false)
-	@NotNull
-	@Max(20)
-	@Min(3)
 	private String titulo;
 	
 	@Column(name="isbn", nullable=false, unique=true)
-	@NotNull
-	@Max(20)
-	@Min(3)
 	private String isbn;
 	
 	@Column(name="autor", nullable=false)
-	@NotNull
-	@Max(64)
-	@Min(3)
 	private String autor;
 	
 	@Column(name="description", nullable=true)
-	@NotNull
-	@Min(3)
 	private String description;
 
 	public Long getId() {

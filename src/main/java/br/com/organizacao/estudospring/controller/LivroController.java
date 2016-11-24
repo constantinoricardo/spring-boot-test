@@ -5,8 +5,12 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,12 +18,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.organizacao.estudospring.dao.LivroDAO;
 import br.com.organizacao.estudospring.entity.Livro;
+import br.com.organizacao.estudospring.validator.LivroValidator;
 
 @Controller
 public class LivroController {
 	
 	@Autowired
 	private LivroDAO livroDao;
+	
+	@InitBinder
+	protected void InitBinder(WebDataBinder binder) {
+		binder.setValidator(new LivroValidator());
+	}
 	
 	@RequestMapping(value = "/all")
 	@ResponseBody
@@ -77,13 +87,16 @@ public class LivroController {
 	@RequestMapping(value="/criarTeste", method=RequestMethod.POST)
 	@ResponseBody
 	public String criarTeste(
-							@RequestParam(value="autor") String autor,
-							@RequestParam(value="titulo") String titulo,
-							@RequestParam(value="description") String description,
-							@RequestParam(value="isbn") String isbn
+							@Valid Livro livro,
+							BindingResult result
 							) {		
 		
-		return autor + " Cadastrado com sucesso.";
+		if (result.hasErrors()) {
+			FieldError field = result.getFieldError();
+			return field.getDefaultMessage();
+		}
+		
+		return livro.getAutor() + " Cadastrado com sucesso";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
