@@ -1,5 +1,7 @@
 package br.com.organizacao.estudospring.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="livro")
-public class Livro {
+public class Livro implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -67,5 +69,8 @@ public class Livro {
 		this.description = description;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "autor="+getAutor()+"&description="+getDescription()+"&isbn="+getIsbn()+"&titulo="+getTitulo();
+	}
 }
