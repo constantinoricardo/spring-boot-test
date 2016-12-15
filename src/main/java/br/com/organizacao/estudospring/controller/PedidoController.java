@@ -19,7 +19,7 @@ import br.com.organizacao.estudospring.entity.Livro;
 
 @RestController
 public class PedidoController {
-
+	
 	@RequestMapping(value="/pedido/servico", method=RequestMethod.POST)
 	public String servico() {
 		String objeto = "{nome: 'Ricardo Constantino', profissao: 'Diretor', idade: '31'}";
@@ -30,7 +30,35 @@ public class PedidoController {
 		String idade = json.getString("idade");
 		
 		return "Nome: " + nome + " Profissao: " + profissao + " Idade: " + idade;		
-	}		
+	}	
+	
+	@RequestMapping(value="/pedido/lerconteudo")
+	public String ler() {
+		String conteudo = "";	
+		StringBuffer sb = null;
+		try {
+			
+			URL url = new URL("http://172.16.16.140:122/diretiva/projeto_teste/lista_teste.php");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
+				
+				sb = new StringBuffer();
+				
+				while ((conteudo = in.readLine()) != null) {
+					sb.append(conteudo);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return sb.toString();
+	}
 		
 	@RequestMapping(value="/pedido/webservice", method=RequestMethod.POST)
 	public String webservice() {
